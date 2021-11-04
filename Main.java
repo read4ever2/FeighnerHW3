@@ -9,7 +9,7 @@ public class Main {
         for (Thread thread : threadArray) {
             thread.start();
             try {
-                Thread.sleep(30);
+                Thread.sleep(5);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -31,7 +31,7 @@ class LoopPrinter implements Runnable {
         for (int i = 1; i < 6; i++) {
             Printer.output(identifier,i);
             try {
-                Thread.sleep(200);
+                Thread.sleep(5);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
