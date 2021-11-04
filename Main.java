@@ -19,7 +19,6 @@ public class Main {
 
 class LoopPrinter implements Runnable {
 
-    static Printer printer;
 
     private final int identifier;
 
@@ -41,7 +40,7 @@ class LoopPrinter implements Runnable {
 }
 
 class Printer {
-    synchronized void output(int id, int iteration) {
-        System.out.print("Thread " + id + " -- iteration " + iteration);
+    static synchronized void output(int id, int iteration) {
+        System.out.print("Thread " + id + " -- iteration " + iteration+"\n");
     }
 }
