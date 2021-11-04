@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Main {
   public static void main(String[] args) {
 
@@ -11,7 +9,7 @@ public class Main {
     for (Thread thread : threadArray) {
       thread.start();
       try {
-        Thread.sleep(25);
+        Thread.sleep(30);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
@@ -30,9 +28,10 @@ class LoopPrinter implements Runnable {
   @Override
   public void run() {
     for (int i = 1; i < 6; i++) {
+
       System.out.print("Thread " + identifier + " -- iteration " + i + "\n");
       try {
-        Thread.sleep(50);
+        Thread.sleep(200);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
