@@ -1,46 +1,58 @@
 public class Main {
-    public static void main(String[] args) {
 
-        Thread[] threadArray = new Thread[3];
-        threadArray[0] = new Thread(new LoopPrinter(1));
-        threadArray[1] = new Thread(new LoopPrinter(2));
-        threadArray[2] = new Thread(new LoopPrinter(3));
+  private volatile Integer count = 3;
+  private volatile Integer nextThread = 1;
+  private final Object object = new Object();
 
-        for (Thread thread : threadArray) {
-            thread.start();
-            try {
-                Thread.sleep(30);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-}
+  public static void main(String[] args) {
 
-class LoopPrinter implements Runnable {
+    Main threadHolder = new Main();
+    Thread threadOne = new Thread(threadHolder.new ThreadPrinter(1));
+    Thread threadTwo = new Thread(threadHolder.new ThreadPrinter(2));
+    Thread threadThree = new Thread(threadHolder.new ThreadPrinter(3));
+
+    threadOne.start();
+    threadTwo.start();
+    threadThree.start();
+  }
 
 
-    private final int identifier;
+  class ThreadPrinter implements Runnable {
 
-    LoopPrinter(int identifier) {
-        this.identifier = identifier;
+    private final int threadIdentifier;
+
+    public ThreadPrinter(int threadIdentifier) {
+      super();
+      this.threadIdentifier = threadIdentifier;
     }
 
     @Override
     public void run() {
-        for (int i = 1; i < 6; i++) {
-            Printer.output(identifier,i);
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+      try {
+        while (count <= 17) {
+          synchronized (object) {
+            if (threadIdentifier != nextThread) {
+              object.wait();
+            } else {
+              System.out.print("Thread " + threadIdentifier + " -- iteration " + count / 3 + "\n");
+              count++;
+              // nextThread = (threadIdentifier + 1) % 3;
+
+              if (threadIdentifier == 1) {
+                nextThread = 2;
+              } else if (threadIdentifier == 2) {
+                nextThread = 3;
+              } else if (threadIdentifier == 3) {
+                nextThread = 1;
+              }
+              object.notifyAll();
             }
+          }
         }
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
+  }
 }
 
-class Printer {
-    static synchronized void output(int id, int iteration) {
-        System.out.print("Thread " + id + " -- iteration " + iteration+"\n");
-    }
-}
