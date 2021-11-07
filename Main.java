@@ -38,12 +38,10 @@ public class Main {
               count++;
               // nextThread = (threadIdentifier + 1) % 3;
 
-              if (threadIdentifier == 1) {
-                nextThread = 2;
-              } else if (threadIdentifier == 2) {
-                nextThread = 3;
-              } else if (threadIdentifier == 3) {
-                nextThread = 1;
+              switch (threadIdentifier) {
+                case 1 -> nextThread = 2;
+                case 2 -> nextThread = 3;
+                case 3 -> nextThread = 1;
               }
               object.notifyAll();
             }
