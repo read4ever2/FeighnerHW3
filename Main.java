@@ -36,12 +36,13 @@ public class Main {
             } else {
               System.out.print("Thread " + threadIdentifier + " -- iteration " + count / 3 + "\n");
               count++;
-              // nextThread = (threadIdentifier + 1) % 3;
 
-              switch (threadIdentifier) {
-                case 1 -> nextThread = 2;
-                case 2 -> nextThread = 3;
-                case 3 -> nextThread = 1;
+              if (threadIdentifier == 1) {
+                nextThread = 2;
+              } else if (threadIdentifier == 2) {
+                nextThread = 3;
+              } else if (threadIdentifier == 3) {
+                nextThread = 1;
               }
               object.notifyAll();
             }
